@@ -95,10 +95,10 @@ Secondly, to get offers list from the Credify SDK, you should use `getOfferList`
     
 ```kotlin
 val params = GetOfferListParam(
-    phoneNumber = [Your user phone number] (Optional) - e.g. "32123456789",
-    countryCode = [Your user phone number country code] (Optional) - e.g. "+84",
-    localId = [Your user id],
-    credifyId = [Your user's credify id] (Optional)
+    phoneNumber = // Your user phone number (Optional) - e.g. "32123456789",
+    countryCode = // Your user phone number country code (Optional) - e.g. "+84",
+    localId = // Your user id,
+    credifyId = // Your user's credify id (Optional)
 )
 
 CredifySDK.instance.getOfferList(params = params, callback: OfferListCallback)
@@ -111,22 +111,22 @@ CredifySDK.instance.getOfferList(params = params): Observable<List<Offer>>
 Create `one.credify.sdk.core.model.UserProfile` object.
 ```kotlin
 val user = UserProfile(
-    id = [Your user id],
+    id = // Your user id,
     name = Name(
-        firstName = [Your user's first name],
-        lastName = [Your user's last name],
-        middleName = [Your user's middle name] (Optional),
-        name = [Your user's full name] (Optional),
-        verified = [Is your user's name verified?]
+        firstName = // Your user's first name,
+        lastName = // Your user's last name,
+        middleName = // Your user's middle name (Optional),
+        name = // Your user's full name (Optional),
+        verified = // Is your user's name verified?
     ),
     phone = Phone(
-        phoneNumber = [Your user's phone number],
-        countryCode = [Your user's phone country code],
-        verified = [Is your user's phone number verified?]
+        phoneNumber = // Your user's phone number,
+        countryCode = // Your user's phone country code,
+        verified = // Is your user's phone number verified?
     ),
-    email = [Your user's email],
-    dob = [Your user's day of birth](Optional),
-    address = [Your user's address](Optional)
+    email = // Your user's email,
+    dob = // Your user's day of birth (Optional),
+    address = // Your user's address (Optional)
 )
 ```
 
@@ -134,25 +134,25 @@ To show an **offer detail** by using:
 
 ```kotlin
 CredifySDK.instance.showOffer(
-    context = [Context],
-    offer = [one.credify.sdk.core.model.Offer object],
-    userProfile = [one.credify.sdk.core.model.UserProfile object],
-    credifyId = [Your user's credify id. If your user have created Credify account then it should not be null],
-    marketName = [Your app name],
-    pushClaimCallback = [CredifySDK.PushClaimCallback callback],
-    offerPageCallback = [CredifySDK.OfferPageCallback callback]
+    context = // Context,
+    offer = // one.credify.sdk.core.model.Offer object,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id. If your user have created Credify account then it should not be null,
+    marketName = // Your app name,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback,
+    offerPageCallback = // CredifySDK.OfferPageCallback callback
 )
 ```
 
-When you pass the `credifyId` argument with `null` then you have to handle the `CredifySDK.PushClaimCallback` callback for pushing claims. For example:
+You have to handle the `CredifySDK.PushClaimCallback` callback for pushing claims. For example:
 
 ```kotlin
 CredifySDK.instance.showOffer(
-    context = [Context],
-    offer = [one.credify.sdk.core.model.Offer object],
-    userProfile = [one.credify.sdk.core.model.UserProfile object],
-    credifyId = [Your user's credify id],
-    marketName = [Your app name],
+    context = // Context,
+    offer = // one.credify.sdk.core.model.Offer object,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id,
+    marketName = // Your app name,
     pushClaimCallback = object : CredifySDK.PushClaimCallback {
         override fun onPushClaim(
             credifyId: String,
@@ -166,7 +166,7 @@ CredifySDK.instance.showOffer(
             )
         }
     },
-    offerPageCallback = [CredifySDK.OfferPageCallback callback]
+    offerPageCallback = // CredifySDK.OfferPageCallback callback
 )
 ```
 
@@ -174,12 +174,12 @@ To handle when the **offer detail** page is closed, you have to handle the `Cred
 
 ```kotlin
 CredifySDK.instance.showOffer(
-    context = [Context],
-    offer = [one.credify.sdk.core.model.Offer object],
-    userProfile = [one.credify.sdk.core.model.UserProfile object],
-    credifyId = [Your user's credify id],
-    marketName = [Your app name],
-    pushClaimCallback = [CredifySDK.PushClaimCallback callback],
+    context = // Context,
+    offer = // one.credify.sdk.core.model.Offer object,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id,
+    marketName = // Your app name,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback,
     offerPageCallback = object : CredifySDK.OfferPageCallback {
         override fun onClose() {
             // Your code logic here
@@ -195,9 +195,9 @@ Using the below code for showing the **referral information** with `completed` s
 
 ```kotlin
 CredifySDK.instance.showReferralResult(
-    context = [Context],
-    userProfile = [one.credify.sdk.core.model.UserProfile object],
-    marketName = [Your app name],
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    marketName = // Your app name,
     callback = object : CredifySDK.OnShowReferralResultCallback {
         override fun onShow() {
             // The page is showing on the UI
