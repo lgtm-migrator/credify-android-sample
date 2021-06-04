@@ -89,7 +89,7 @@ val credifySDK = CredifySDK.instance
 
 #### Get offers list
 
-First, you need to create a paramater object by using `GetOfferListParam` class.
+First, you need to create a parameter object by using `GetOfferListParam` class.
 
 Secondly, to get offers list from the Credify SDK, you should use `getOfferList` method:
     
