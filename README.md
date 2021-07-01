@@ -18,11 +18,19 @@ Update the `build.gradle`(app level).
     
 ```java
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.3'
+    implementation 'one.credify.sdk:android-sdk:v0.1.4'
 }
 ```
 
 Sync project with Gradle file.
+
+**Note:** If you gets the below error when you build your project.
+
+<img width="569" alt="Screenshot 2021-07-01 at 20 10 33" src="https://user-images.githubusercontent.com/18586774/124133379-f9320600-daab-11eb-8ae1-84c4c6deed5a.png">
+
+Then you need to add this line *tools:replace="android:supportsRtl"* into the *<application>* element in the *AndroidManifest.xml*.
+    
+<img width="622" alt="Screenshot 2021-07-01 at 20 24 52" src="https://user-images.githubusercontent.com/18586774/124133651-3d250b00-daac-11eb-80fd-981cf85568c8.png">    
 
 
 ## Getting stated
@@ -101,9 +109,9 @@ val params = GetOfferListParam(
     credifyId = // Your user's credify id (Optional)
 )
 
-CredifySDK.instance.getOfferList(params = params, callback: OfferListCallback)
+CredifySDK.instance.offerApi.getOfferList(params = params, callback: OfferListCallback)
 // OR
-CredifySDK.instance.getOfferList(params = params): Observable<List<Offer>>
+CredifySDK.instance.offerApi.getOfferList(params = params): Observable<List<Offer>>
 ```
 
 #### Show an offer detail
@@ -133,7 +141,7 @@ val user = UserProfile(
 To show an **offer detail** by using:
 
 ```kotlin
-CredifySDK.instance.showOffer(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
@@ -147,7 +155,7 @@ CredifySDK.instance.showOffer(
 You have to handle the `CredifySDK.PushClaimCallback` callback for pushing claims. For example:
 
 ```kotlin
-CredifySDK.instance.showOffer(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
@@ -173,7 +181,7 @@ CredifySDK.instance.showOffer(
 To handle when the **offer detail** page is closed, you have to handle the `CredifySDK.OfferPageCallback` callback. For example:   
 
 ```kotlin
-CredifySDK.instance.showOffer(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
@@ -194,7 +202,7 @@ CredifySDK.instance.showOffer(
 Using the below code for showing the **referral information** with `completed` status:
 
 ```kotlin
-CredifySDK.instance.showReferralResult(
+CredifySDK.instance.referralApi.showReferralResult(
     context = // Context,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
     marketName = // Your app name,
