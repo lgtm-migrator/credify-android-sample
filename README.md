@@ -120,17 +120,15 @@ Create `one.credify.sdk.core.model.UserProfile` object.
 ```kotlin
 val user = UserProfile(
     id = // Your user id,
-    name = Name(
+    name = UserName(
         firstName = // Your user's first name,
         lastName = // Your user's last name,
         middleName = // Your user's middle name (Optional),
-        name = // Your user's full name (Optional),
-        verified = // Is your user's name verified?
+        name = // Your user's full name (Optional)
     ),
-    phone = Phone(
+    phone = UserPhoneNumber(
         phoneNumber = // Your user's phone number,
-        countryCode = // Your user's phone country code,
-        verified = // Is your user's phone number verified?
+        countryCode = // Your user's phone country code
     ),
     email = // Your user's email,
     dob = // Your user's day of birth (Optional),
