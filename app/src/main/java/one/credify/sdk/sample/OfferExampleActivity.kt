@@ -108,17 +108,15 @@ class OfferExampleActivity : BaseActivity() {
                 // Create user profile object
                 mUserProfile = UserProfile(
                     id = user.id,
-                    name = Name(
+                    name = UserName(
                         firstName = user.firstName,
                         lastName = user.lastName,
                         middleName = null,
-                        name = null,
-                        verified = true
+                        fullName = null
                     ),
-                    phone = Phone(
+                    phone = UserPhoneNumber(
                         phoneNumber = user.phoneNumber,
-                        countryCode = user.phoneCountryCode,
-                        verified = true
+                        countryCode = user.phoneCountryCode
                     ),
                     email = user.email,
                     dob = null,
