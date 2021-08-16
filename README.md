@@ -18,7 +18,7 @@ Update the `build.gradle`(app level).
     
 ```java
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.4'
+    implementation 'one.credify.sdk:android-sdk:v0.1.5'
 }
 ```
 
