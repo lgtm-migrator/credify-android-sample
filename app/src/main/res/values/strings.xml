@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">ServiceX sample</string>
+    <string name="lb_use_case_title">serviceX Sample App</string>
+    <string name="lb_use_case_1">Use case 1 - Checkout screen</string>
+    <string name="lb_use_case_2">Use case 2 - Banner</string>
+    <string name="lb_use_case_3">Use case 3 - My page screen</string>
+    <string name="lb_my_page">My page</string>
+    <string name="lb_check_out">Check out</string>
+    <string name="lb_credify_mall">Credify Mall</string>
+    <string name="lb_edit_profile">Edit profile</string>
+    <string name="lb_change_password">Change password</string>
+    <string name="lb_about_us">About us</string>
+    <string name="lb_my_digital_passport">My Digital Passport</string>
+    <string name="lb_pay_with">Pay with</string>
+    <string name="lb_place_order">Place order</string>
+    <string name="lb_featured_product">Featured Product</string>
+    <string name="lb_best_seller">Best Sellers</string>
+    <string name="lb_see_all">See All</string>
+    <string name="lb_yes">Yes</string>
+    <string name="lb_no">No</string>
+    <string name="lb_error">Error</string>
+    <string name="msg_passport_is_showing">Passport is showing</string>
+    <string name="msg_passport_is_closed">Passport is closed</string>
+    <string name="msg_no_user_is_loaded">There is no loaded user. Do you want to get a new user?</string>
+    <string name="msg_this_is_a_sample_button">This is a sample button.</string>
+    <string name="msg_this_is_a_sample_component">This is a sample component.</string>
+    <string name="msg_this_is_a_sample_item">This is a sample item.</string>
+    <string name="msg_this_is_in_development_coming_soon">This is in development. It\'s coming soon</string>
+    <string name="msg_there_are_not_any_offers">There are not any offers</string>
 </resources>

@@ -1,4 +1,4 @@
-package one.credify.sdk.sample
+package one.credify.sdk.sample.model
 
 import com.google.gson.annotations.SerializedName
 
