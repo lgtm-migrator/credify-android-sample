@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:supportsRtl,android:label">
         <activity
-            android:name=".OfferExampleActivity"
+            android:name="one.credify.sdk.sample.screen.useCase.UseCaseActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="one.credify.sdk.sample.screen.checkOut.CheckOutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="one.credify.sdk.sample.screen.myPage.MyPageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="one.credify.sdk.sample.screen.banner.BannerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

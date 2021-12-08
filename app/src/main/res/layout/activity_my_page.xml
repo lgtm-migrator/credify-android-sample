@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            style="@style/TopTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="56dp"
+            android:gravity="center"
+            android:text="@string/lb_my_page"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_user_avatar" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        style="@style/ItemTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:minHeight="0dp"
+        tools:text="Amy Cred" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvEditProfile"
+            style="@style/ItemTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lb_edit_profile"
+            app:drawableRightCompat="@drawable/ic_right_arrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="2dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/tvChangePassword"
+            style="@style/ItemTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lb_change_password"
+            app:drawableRightCompat="@drawable/ic_right_arrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="2dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/tvAboutUs"
+            style="@style/ItemTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lb_about_us"
+            app:drawableRightCompat="@drawable/ic_right_arrow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="2dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/tvMyDigitalPassport"
+            style="@style/ItemTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_small_credify"
+            android:drawablePadding="4dp"
+            android:text="@string/lb_my_digital_passport"
+            app:drawableRightCompat="@drawable/ic_right_arrow" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -18,7 +18,7 @@ Update the `build.gradle`(app level).
     
 ```java
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.5'
+    implementation 'one.credify.sdk:android-sdk:v0.1.8'
 }
 ```
 
@@ -220,6 +220,25 @@ CredifySDK.instance.referralApi.showReferralResult(
 )
 ```
 
+#### Show Passport
+
+Using the below code for showing the **Passport web app**. This page will show all the offers which the user has redeemed.
+
+```kotlin
+CredifySDK.instance.offerApi.showPassport(
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    callback = object : CredifySDK.PassportPageCallback {
+        override fun onShow() {
+            // The page is showing on the UI
+        }
+
+        override fun onClose() {
+            // The page is closed
+        }
+    }
+)
+```
 
 ## Contacts
 
