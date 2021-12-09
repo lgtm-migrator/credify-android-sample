@@ -38,15 +38,15 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
 
         getOfferList(
             user = mUser,
-            onResult = OnResult@ { offerList ->
+            onResult = OnResult@{ offerList ->
                 mOfferList = offerList
 
-                if (offerList.offerList.isEmpty())  {
+                if (offerList.offerList.isEmpty()) {
                     showMessage(getString(R.string.msg_there_are_not_any_offers))
                     return@OnResult
                 }
 
-                offerList.offerList.firstOrNull()?.run {
+                offerList.offerList.firstOrNull { !it.useReferral }?.run {
                     ImageHelper.load(
                         iv = ivOffer,
                         url = campaign.thumbnailUrl
