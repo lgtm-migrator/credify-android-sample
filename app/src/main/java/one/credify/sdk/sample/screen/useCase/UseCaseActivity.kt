@@ -21,7 +21,7 @@ class UseCaseActivity : BaseActivity() {
         MarketInfo(
             name = Constants.MARKET_NAME,
             apiKey = Constants.API_KEY,
-            path = Constants.MARKET_NAME,
+            path = Constants.PATH,
             environment = Constants.ENVIRONMENT
         )
     }
