@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ServiceX sample</string>
+    <string name="app_name">serviceX Sample</string>
     <string name="lb_use_case_title">serviceX Sample App</string>
     <string name="lb_use_case_1">Use case 1 - Checkout screen</string>
     <string name="lb_use_case_2">Use case 2 - Banner</string>
