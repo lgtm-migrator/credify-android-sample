@@ -17,6 +17,17 @@ allprojects {
 Update the `build.gradle`(app level).
     
 ```java
+android {
+    ...
+    
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+        noCompress "bic"
+    }
+    ...
+}
+
 dependencies {
     implementation 'one.credify.sdk:android-sdk:v0.1.8'
 }
@@ -111,7 +122,10 @@ val params = GetOfferListParam(
 
 CredifySDK.instance.offerApi.getOfferList(params = params, callback: OfferListCallback)
 // OR
-CredifySDK.instance.offerApi.getOfferList(params = params): Observable<List<Offer>>
+CredifySDK.instance.offerApi.getOfferList(params = params): Observable<OfferList>
+
+// NOTE: you need to pass credifyId when you call `CredifySDK.instance.offerApi.showOffer` method
+data class OfferList(val offerList: List<Offer>, val credifyId: String?) : Serializable
 ```
 
 #### Show an offer detail
