@@ -21,10 +21,10 @@ android {
     ...
     
     aaptOptions {
-            noCompress "tflite"
-            noCompress "lite"
-            noCompress "bic"
-        }
+        noCompress "tflite"
+        noCompress "lite"
+        noCompress "bic"
+    }
     ...
 }
 
