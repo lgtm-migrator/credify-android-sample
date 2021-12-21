@@ -12,6 +12,7 @@ import one.credify.sdk.core.CredifyError
 import one.credify.sdk.core.callback.OfferListCallback
 import one.credify.sdk.core.model.Offer
 import one.credify.sdk.core.model.OfferList
+import one.credify.sdk.core.model.RedemptionResult
 import one.credify.sdk.core.model.UserProfile
 import one.credify.sdk.core.request.GetOfferListParam
 import one.credify.sdk.sample.BaseActivity
@@ -98,8 +99,12 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
                             }
                         },
                         offerPageCallback = object : CredifySDK.OfferPageCallback {
-                            override fun onClose() {
-                                // Do nothing
+                            override fun onClose(status: RedemptionResult) {
+                                // There are three status
+                                // - COMPLETED: the user redeemed offer successfully and the offer transaction status is COMPLETED.
+                                // - PENDING:   the user redeemed offer successfully and the offer transaction status is PENDING.
+                                // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked
+                                //              on the back button in any screens in the offer redemption flow.
                             }
                         }
                     )
