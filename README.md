@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.8'
+    implementation 'one.credify.sdk:android-sdk:v0.1.9'
 }
 ```
 
@@ -186,7 +186,15 @@ CredifySDK.instance.offerApi.showOffer(
             )
         }
     },
-    offerPageCallback = // CredifySDK.OfferPageCallback callback
+    offerPageCallback = object : CredifySDK.OfferPageCallback {
+        override fun onClose(status: RedemptionResult) {
+            // There are three status
+            // - COMPLETED: the user redeemed offer successfully and the offer transaction status is COMPLETED.
+            // - PENDING:   the user redeemed offer successfully and the offer transaction status is PENDING.
+            // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked 
+            //              on the back button in any screens in the offer redemption flow.
+        }
+    }
 )
 ```
 
