@@ -28,4 +28,9 @@
     <style name="TopTitleStyle" parent="NormalTextStyle">
         <item name="android:textColor">@color/red</item>
     </style>
+
+    <style name="CustomDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:colorAccent">@color/color_primary_brandy_start</item>
+        <item name="android:colorControlActivated">@color/color_primary_brandy_start</item>
+    </style>
 </resources>

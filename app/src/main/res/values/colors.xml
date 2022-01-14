@@ -10,4 +10,13 @@
     <color name="divider">#C4C4C4</color>
     <color name="red">#D61E25</color>
     <color name="blue">#3669C9</color>
+
+    <color name="color_primary_brandy_start">#1382F8</color>
+    <color name="color_primary_brandy_end">#1382F8</color>
+    <color name="color_button_brandy_start">#02D15D</color>
+    <color name="color_button_brandy_end">#01B779</color>
+    <color name="color_secondary_active">#1483F7</color>
+    <color name="color_secondary_disable">#E0E0E0</color>
+    <color name="color_secondary_background">#F6F8FF</color>
+    <color name="color_secondary_component_background">#DFF3FE</color>
 </resources>
