@@ -61,6 +61,7 @@ override fun onCreate() {
         .withApiKey([Your API Key])
         .withContext(this)
         .withEnvironment([Environment])
+        .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
         .build()
     ...
 }
@@ -263,11 +264,12 @@ CredifySDK.instance.offerApi.showPassport(
 )
 ```
 
-### customize theme
+### Customize theme
 Below is an example result if you do customize theme.
+
 ![Theme](./imgs/ThemeOverview.png)
 
-You can use `ServiceXThemeConfig` class to config the fonts, colors, input fields and so on for the serviceX SDK. 
+You can use `ServiceXThemeConfig` class to config the `fonts`, `colors`, `input fields` and so on for the serviceX SDK. 
 You have to create `ServiceXThemeConfig` object when initializing the SDK. But it is optional. The SDK will use the default theme if you don't want to customize theme
 ```kotlin
     CredifySDK.Builder()
