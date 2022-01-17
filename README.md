@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.9'
+    implementation 'one.credify.sdk:android-sdk:v0.1.11'
 }
 ```
 
@@ -61,6 +61,7 @@ override fun onCreate() {
         .withApiKey([Your API Key])
         .withContext(this)
         .withEnvironment([Environment])
+        .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
         .build()
     ...
 }
@@ -79,6 +80,7 @@ class DemoApplication : Application() {
             .withApiKey([Your API Key])
             .withContext(this)
             .withEnvironment([Environment])
+            .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
             .build()
     }
     ...
@@ -261,6 +263,134 @@ CredifySDK.instance.offerApi.showPassport(
     }
 )
 ```
+
+### Customize theme
+Below is an example result if you do customize theme.
+
+![Theme](./imgs/ThemeOverview.png)
+
+You can use `ServiceXThemeConfig` class to config the `fonts`, `colors`, `input fields` and so on for the serviceX SDK. 
+You have to create `ServiceXThemeConfig` object when initializing the SDK. But it is optional. The SDK will use the default theme if you don't want to customize theme
+```kotlin
+    CredifySDK.Builder()
+        .withApiKey([Your API Key])
+        .withContext(this)
+        .withEnvironment([Environment])
+        .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
+        .build()
+```
+
+#### ServiceXThemeConfig class
+
+```kotlin
+/**
+ * @param color: it is [ThemeColor] object
+ * @param font: it is [ThemeFont] object
+ * @param icon: it is [ThemeIcon] object
+ * @param actionBarTopLeftRadius: top-left action bar radius
+ * @param actionBarBottomLeftRadius: bottom-left action bar radius
+ * @param actionBarTopRightRadius: top-right action bar radius
+ * @param actionBarBottomRightRadius: bottom-right action bar radius
+ * @param datePickerStyle: data picker theme(style id)
+ * @param elevation: it is in dp
+ * @param inputFieldRadius: it is in dp
+ * @param modelRadius: it is in dp
+ * @param buttonRadius: it is in dp
+ */
+class ServiceXThemeConfig(
+    val context: Context,
+    val color: ThemeColor,
+    val font: ThemeFont,
+    val icon: ThemeIcon,
+    val actionBarTopLeftRadius: Float,
+    val actionBarBottomLeftRadius: Float,
+    val actionBarTopRightRadius: Float,
+    val actionBarBottomRightRadius: Float,
+    val datePickerStyle: Int,
+    val elevation: Float,
+    val inputFieldRadius: Float,
+    val modelRadius: Int = 10,
+    val buttonRadius: Float = 50F,
+)
+```
+![Theme](./imgs/ThemeBorderRadius.png)
+
+#### ThemeColor class
+
+```kotlin
+/**
+ * All properties are in [Int]. We can use 
+ * - Color.parse([String]),
+ * - ContextCompat.getColor([Context], [Color resource id])
+ * - Color.WHITE, Color.BLUE,...
+ 
+ * For example: Color.parseColor("#ff00ff")
+ */
+class ThemeColor(
+    val primaryBrandyStart: Int,
+    val primaryBrandyEnd: Int,
+    val primaryText: Int,
+    val secondaryActive: Int,
+    val secondaryDisable: Int,
+    val secondaryText: Int,
+    val secondaryComponentBackground: Int,
+    val secondaryBackground: Int,
+    val topBarTextColor: Int,
+    val primaryButtonTextColor: Int,
+    val primaryButtonBrandyStart: Int,
+    val primaryButtonBrandyEnd: Int,
+)
+```
+![Theme](./imgs/ThemeColor1.png)
+![Theme](./imgs/ThemeColor2.png)
+![Theme](./imgs/ThemeColor3.png)
+
+
+#### ThemeFont class
+
+```kotlin
+/**
+ * @param primaryFontFamily it is [Typeface] object. We can use ResourcesCompat.getFont(Context, R.font.your_font)
+ * @param secondaryFontFamily it is [Typeface] object. We can use ResourcesCompat.getFont(Context, R.font.your_font)
+ */
+class ThemeFont(
+    val context: Context,
+    val primaryFontFamily: Typeface?,
+    val secondaryFontFamily: Typeface?,
+    val secondaryFontWeight: Int,
+    val bigTitleFontSize: Float,
+    val bigTitleFontLineHeight: Int,
+    val modelTitleFontSize: Float,
+    val modelTitleFontLineHeight: Int,
+    val sectionTitleFontSize: Float,
+    val sectionTitleFontLineHeight: Int,
+    val bigFontSize: Float,
+    val bigFontLineHeight: Int,
+    val normalFontSize: Float,
+    val normalFontLineHeight: Int,
+    val smallFontSize: Float,
+    val smallFontLineHeight: Int,
+    val boldFontSize: Float,
+    val boldFontLineHeight: Int,
+)
+```
+![Theme](./imgs/ThemeFont1.png)
+![Theme](./imgs/ThemeFont2.png)
+![Theme](./imgs/ThemeFont3.png)
+![Theme](./imgs/ThemeFont4.png)
+
+#### ThemeIcon class
+
+```kotlin
+class ThemeIcon(
+    val context: Context,
+    val backIcon: Drawable?,
+    val closeIcon: Drawable?,
+)
+
+```
+![Theme](./imgs/ThemeIcon1.png)
+![Theme](./imgs/ThemeIcon2.png)
 
 ## Contacts
 
