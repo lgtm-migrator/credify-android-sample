@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_banner.*
 import kotlinx.android.synthetic.main.activity_my_page.tbToolbar
-import one.credify.common.ui.util.ImageHelper
 import one.credify.sdk.CredifySDK
-import one.credify.sdk.core.CredifyError
+import one.credify.sdk.core.model.CredifyError
 import one.credify.sdk.core.callback.OfferListCallback
 import one.credify.sdk.core.model.Offer
 import one.credify.sdk.core.model.OfferList
@@ -20,6 +19,7 @@ import one.credify.sdk.sample.Constants
 import one.credify.sdk.sample.R
 import one.credify.sdk.sample.model.MarketInfo
 import one.credify.sdk.sample.requester.MarketRequester
+import one.credify.sdk.sample.screen.helper.ImageHelper
 
 class BannerActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mUser: UserProfile
@@ -77,17 +77,15 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
                         offer = offer,
                         userProfile = mUser,
                         credifyId = mOfferList.credifyId,
-                        marketName = mMarketInfo.name,
                         pushClaimCallback = object : CredifySDK.PushClaimCallback {
                             override fun onPushClaim(
                                 credifyId: String,
-                                user: UserProfile,
                                 resultCallback: CredifySDK.PushClaimResultCallback
                             ) {
                                 MarketRequester().pushClaimToken(
                                     context = this@BannerActivity,
                                     marketInfo = mMarketInfo,
-                                    localId = user.id,
+                                    localId = mUser.id,
                                     credifyId = credifyId,
                                     onRequest = {
                                         // Do nothing
@@ -105,6 +103,10 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
                                 // - PENDING:   the user redeemed offer successfully and the offer transaction status is PENDING.
                                 // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked
                                 //              on the back button in any screens in the offer redemption flow.
+                            }
+
+                            override fun onOpenUrl(url: String) {
+                                showMessage("Url: $url")
                             }
                         }
                     )

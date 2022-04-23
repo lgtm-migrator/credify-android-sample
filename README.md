@@ -2,34 +2,38 @@
 
 The SDK supports API level 23 and above ([distribution stats](https://developer.android.com/about/dashboards)).
 
-Update the `build.gradle`(project level). 
-    
+Update the `build.gradle`(project level).
+
 ```java
 allprojects {
     repositories {
         ...
-        maven { url 'https://jitpack.io' }
+        maven { url 'https://jitpack.io' } // Add this line if you are using SDK version `v0.1.x`.
         mavenCentral()
     }
 }
 ```
 
 Update the `build.gradle`(app level).
-    
+
+```java
+dependencies {
+    implementation 'one.credify.sdk:android-sdk:v0.2.0'
+}
+```
+
+**Note**: Update the `build.gradle`(app level) for SDK version `v0.1.x`.
+
 ```java
 android {
     ...
-    
+
     aaptOptions {
         noCompress "tflite"
         noCompress "lite"
         noCompress "bic"
     }
     ...
-}
-
-dependencies {
-    implementation 'one.credify.sdk:android-sdk:v0.1.11'
 }
 ```
 
@@ -40,15 +44,14 @@ Sync project with Gradle file.
 <img width="569" alt="Screenshot 2021-07-01 at 20 10 33" src="https://user-images.githubusercontent.com/18586774/124133379-f9320600-daab-11eb-8ae1-84c4c6deed5a.png">
 
 Then you need to add this line *tools:replace="android:supportsRtl"* into the *<application>* element in the *AndroidManifest.xml*.
-    
-<img width="622" alt="Screenshot 2021-07-01 at 20 24 52" src="https://user-images.githubusercontent.com/18586774/124133651-3d250b00-daac-11eb-80fd-981cf85568c8.png">    
 
+<img width="622" alt="Screenshot 2021-07-01 at 20 24 52" src="https://user-images.githubusercontent.com/18586774/124133651-3d250b00-daac-11eb-80fd-981cf85568c8.png">
 
 ## Getting stated
 
 ### Set up the SDK
 
-Create `CredifySDK` instance. 
+Create `CredifySDK` instance.
 
 If you have created a class that extends from `Application` class. You only add the below code to the `onCreate()` method.
 You can generate a new API key on the serviceX dashboard.
@@ -98,13 +101,11 @@ class DemoApplication : Application() {
 </application>
 ```
 
-
 After creating the `CredifySDK` instance, you can access the singleton like following:
-    
+
 ```kotlin
 val credifySDK = CredifySDK.instance
 ```
-
 
 ### Offer usage
 
@@ -113,7 +114,7 @@ val credifySDK = CredifySDK.instance
 First, you need to create a parameter object by using `GetOfferListParam` class.
 
 Secondly, to get offers list from the Credify SDK, you should use `getOfferList` method:
-    
+
 ```kotlin
 val params = GetOfferListParam(
     phoneNumber = // Your user phone number (Optional) - e.g. "32123456789",
@@ -135,6 +136,7 @@ data class OfferList(val offerList: List<Offer>, val credifyId: String?) : Seria
 #### Show an offer detail
 
 Create `one.credify.sdk.core.model.UserProfile` object.
+
 ```kotlin
 val user = UserProfile(
     id = // Your user id,
@@ -180,7 +182,7 @@ CredifySDK.instance.offerApi.showOffer(
     pushClaimCallback = object : CredifySDK.PushClaimCallback {
         override fun onPushClaim(
             credifyId: String,
-            user: UserProfile,
+            user: UserProfile, // It's removed from version v.0.2.x
             resultCallback: CredifySDK.PushClaimResultCallback
         ) {
             // Code for pushing claims, you need to call your API to do this task.
@@ -204,7 +206,7 @@ CredifySDK.instance.offerApi.showOffer(
     
 > **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOffer`
 
-To handle when the **offer detail** page is closed, you have to handle the `CredifySDK.OfferPageCallback` callback. For example:   
+To handle when the **offer detail** page is closed, you have to handle the `CredifySDK.OfferPageCallback` callback. For example:
 
 ```kotlin
 CredifySDK.instance.offerApi.showOffer(
@@ -221,7 +223,6 @@ CredifySDK.instance.offerApi.showOffer(
     }
 )
 ```
-
 
 #### Use Referral
 
@@ -298,12 +299,14 @@ CredifySDK.instance.offerApi.showPassport(
 - Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that should be used for the localization in the SDK. The `language` is an ISO 639 alpha-2 or alpha-3 language code, or a language subtag up to 8 characters in length.
 
 ### Customize theme
+
 Below is an example result if you do customize theme.
 
 ![Theme](./imgs/ThemeOverview.png)
 
-You can use `ServiceXThemeConfig` class to config the `fonts`, `colors`, `input fields` and so on for the serviceX SDK. 
+You can use `ServiceXThemeConfig` class to config the `fonts`, `colors`, `input fields` and so on for the serviceX SDK.
 You have to create `ServiceXThemeConfig` object when initializing the SDK. But it is optional. The SDK will use the default theme if you don't want to customize theme
+
 ```kotlin
     CredifySDK.Builder()
         .withApiKey([Your API Key])
@@ -346,6 +349,7 @@ class ServiceXThemeConfig(
     val buttonRadius: Float = 50F,
 )
 ```
+
 ![Theme](./imgs/ThemeBorderRadius.png)
 
 #### ThemeColor class
@@ -374,10 +378,10 @@ class ThemeColor(
     val primaryButtonBrandyEnd: Int,
 )
 ```
+
 ![Theme](./imgs/ThemeColor1.png)
 ![Theme](./imgs/ThemeColor2.png)
 ![Theme](./imgs/ThemeColor3.png)
-
 
 #### ThemeFont class
 
@@ -407,6 +411,7 @@ class ThemeFont(
     val boldFontLineHeight: Int,
 )
 ```
+
 ![Theme](./imgs/ThemeFont1.png)
 ![Theme](./imgs/ThemeFont2.png)
 ![Theme](./imgs/ThemeFont3.png)
@@ -422,8 +427,90 @@ class ThemeIcon(
 )
 
 ```
+
 ![Theme](./imgs/ThemeIcon1.png)
 ![Theme](./imgs/ThemeIcon2.png)
+
+### Migrate from version `v0.1.x` to `v0.2.x`
+
+#### ServiceXThemeConfig class
+
+Removed the below properties:
+
+- `context`.
+- `actionBarTopLeftRadius`.
+- `actionBarBottomLeftRadius`.
+- `actionBarTopRightRadius`.
+- `actionBarBottomRightRadius`.
+- `datePickerStyle`.
+- `elevation`.
+
+```kotlin
+/**
+ * @param color: it is [ThemeColor]
+ * @param font: it is [ThemeFont]
+ * @param icon: it is [ThemeIcon]
+ * @param inputFieldRadius: Input field radius
+ * @param pageHeaderRadius: bottom-left and bottom right action bar radius
+ * @param modelRadius: Model radius
+ * @param buttonRadius: Button radius
+ * @param boxShadow: Shadow for a component. Ex: "0px 4px 30px rgba(0, 0, 0, 0.1)".
+ * For more information, visit here: https://www.w3schools.com/cssref/css3_pr_box-shadow.asp
+ */
+class ServiceXThemeConfig(
+    val color: ThemeColor,
+    val font: ThemeFont,
+    val icon: ThemeIcon,
+    val inputFieldRadius: Float,
+    val pageHeaderRadius: Float,
+    val modelRadius: Float,
+    val buttonRadius: Float,
+    val boxShadow: String,
+)
+```
+
+#### ThemeColor class
+
+- Removed the `context` property.
+- All properties are in string instead of integer. It is hex string. For example: "#ff00ff"
+
+#### ThemeFont class
+
+- Removed the `context` property.
+- The `primaryFontFamily` property is the font family name instead of `Typeface`. It must be available on Google Font
+  E.g: "Oswald", "Roboto Slab"
+- The `secondaryFontFamily` property is the font family name instead of `Typeface`. It must be available on Google Font
+  E.g: "Oswald", "Roboto Slab"
+
+#### CredifyError class
+
+- Using `one.credify.sdk.core.model.CredifyError` instead of `one.credify.sdk.core.CredifyError`
+
+#### UserName class
+
+- The `name` property is nullable.
+
+#### PushClaimCallback interface
+
+- Removed `user` argument in the `onPushClaim` method.
+
+#### CredifySDK.instance.offerApi.showOffer method
+
+- Removed `marketName` argument.
+
+#### Update the `build.gradle`(app level).
+
+- If the `compileSdkVersion` is less than `31` then you need to add the below scripts:
+  ```java
+    android {
+      ...
+      configurations.all {
+          resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+          resolutionStrategy { force 'androidx.appcompat:appcompat:1.3.1' }
+      }
+      ...
+    }
+  ```
 
 ## Contacts
 

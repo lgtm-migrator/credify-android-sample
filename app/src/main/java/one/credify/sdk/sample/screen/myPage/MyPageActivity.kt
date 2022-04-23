@@ -25,7 +25,7 @@ class MyPageActivity : BaseActivity(), View.OnClickListener {
         tvAboutUs.setOnClickListener(this)
         tvMyDigitalPassport.setOnClickListener(this)
 
-        tvUserName.text = "${mUser.name.firstName} ${mUser.name.lastName}"
+        tvUserName.text = "${mUser.name?.firstName ?: ""} ${mUser.name?.lastName ?: ""}"
     }
 
     override fun onBackClick() {
