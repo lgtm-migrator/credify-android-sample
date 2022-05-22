@@ -129,6 +129,8 @@ CredifySDK.instance.offerApi.getOfferList(params = params): Observable<OfferList
 // NOTE: you need to pass credifyId when you call `CredifySDK.instance.offerApi.showOffer` method
 data class OfferList(val offerList: List<Offer>, val credifyId: String?) : Serializable
 ```
+    
+> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOffer`
 
 #### Show an offer detail
 
@@ -199,6 +201,8 @@ CredifySDK.instance.offerApi.showOffer(
     }
 )
 ```
+    
+> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOffer`
 
 To handle when the **offer detail** page is closed, you have to handle the `CredifySDK.OfferPageCallback` callback. For example:   
 
