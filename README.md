@@ -290,7 +290,7 @@ CredifySDK.instance.offerApi.showPassport(
 )
 ```
 
-#### Set language
+#### Setup language
 
 - It's available from version `v0.1.16`.
 - Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that should be used for the localization in the SDK. The `language` is an ISO 639 alpha-2 or alpha-3 language code, or a language subtag up to 8 characters in length.
