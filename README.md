@@ -252,6 +252,8 @@ CredifySDK.instance.referralApi.showReferralResult(
 
 Using the below code for showing the **Passport web app**. This page will show all the offers which the user has redeemed.
 
+Older version than `v0.1.16`
+
 ```kotlin
 CredifySDK.instance.offerApi.showPassport(
     context = // Context,
@@ -267,6 +269,31 @@ CredifySDK.instance.offerApi.showPassport(
     }
 )
 ```
+
+Version `v0.1.16` and above
+
+```kotlin
+CredifySDK.instance.offerApi.showPassport(
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback. It's the same argument in the above CredifySDK.instance.offerApi.showOffer
+    callback = object : CredifySDK.PassportPageCallback {
+        override fun onShow() {
+            // The page is showing on the UI
+        }
+
+        override fun onClose() {
+            // The page is closed
+        }
+    }
+)
+```
+
+#### Set language
+
+- It's available from version `v0.1.16`.
+- Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that should be used for the localization in the SDK. The `language` is an ISO 639 alpha-2 or alpha-3 language code, or a language subtag up to 8 characters in length.
 
 ### Customize theme
 Below is an example result if you do customize theme.
