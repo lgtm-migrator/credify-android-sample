@@ -252,6 +252,8 @@ CredifySDK.instance.referralApi.showReferralResult(
 
 Using the below code for showing the **Passport web app**. This page will show all the offers which the user has redeemed.
 
+> **Important**: This method must be used after the user created an account. That's mean you have `credifyId` on your side
+
 Older version than `v0.1.16`
 
 ```kotlin
