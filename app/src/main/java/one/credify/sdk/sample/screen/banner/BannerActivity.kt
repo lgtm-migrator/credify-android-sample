@@ -41,6 +41,7 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
             user = mUser,
             onResult = OnResult@{ offerList ->
                 mOfferList = offerList
+                mUser.credifyId = offerList.credifyId
 
                 if (offerList.offerList.isEmpty()) {
                     showMessage(getString(R.string.msg_there_are_not_any_offers))
@@ -76,7 +77,6 @@ class BannerActivity : BaseActivity(), View.OnClickListener {
                         context = this,
                         offer = offer,
                         userProfile = mUser,
-                        credifyId = mOfferList.credifyId,
                         pushClaimCallback = object : CredifySDK.PushClaimCallback {
                             override fun onPushClaim(
                                 credifyId: String,

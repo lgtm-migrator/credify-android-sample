@@ -152,7 +152,8 @@ val user = UserProfile(
     ),
     email = // Your user's email,
     dob = // Your user's day of birth (Optional),
-    address = // Your user's address (Optional)
+    address = // Your user's address (Optional),
+    credifyId = // Your user's credify id. If your user have created Credify account then it should not be null
 )
 ```
 
@@ -163,7 +164,7 @@ CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
-    credifyId = // Your user's credify id. If your user have created Credify account then it should not be null,
+    credifyId = // Your user's credify id. If your user have created Credify account then it should not be null. It's removed from v0.2.0 because it is moved to UserProfile object,
     marketName = // Your app name,
     pushClaimCallback = // CredifySDK.PushClaimCallback callback,
     offerPageCallback = // CredifySDK.OfferPageCallback callback
@@ -177,7 +178,7 @@ CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
-    credifyId = // Your user's credify id,
+    credifyId = // Your user's credify id. It's removed from v0.2.0 because of moving to UserProfile object,
     marketName = // Your app name,
     pushClaimCallback = object : CredifySDK.PushClaimCallback {
         override fun onPushClaim(
@@ -200,6 +201,9 @@ CredifySDK.instance.offerApi.showOffer(
             // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked 
             //              on the back button in any screens in the offer redemption flow.
         }
+
+        override fun onOpenUrl(url: String) {
+        }
     }
 )
 ```
@@ -213,7 +217,7 @@ CredifySDK.instance.offerApi.showOffer(
     context = // Context,
     offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
-    credifyId = // Your user's credify id,
+    credifyId = // Your user's credify id. It's removed from v0.2.0 because of moving to UserProfile object,
     marketName = // Your app name,
     pushClaimCallback = // CredifySDK.PushClaimCallback callback,
     offerPageCallback = object : CredifySDK.OfferPageCallback {
@@ -273,10 +277,30 @@ CredifySDK.instance.offerApi.showPassport(
 )
 ```
 
-Version `v0.1.16` and above
+Version `v0.1.16`
 
 ```kotlin
 CredifySDK.instance.offerApi.showPassport(
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback. It's the same argument in the above CredifySDK.instance.offerApi.showOffer
+    callback = object : CredifySDK.PassportPageCallback {
+        override fun onShow() {
+            // The page is showing on the UI
+        }
+
+        override fun onClose() {
+            // The page is closed
+        }
+    }
+)
+```
+
+Version `v0.2.0` and above
+
+```kotlin
+CredifySDK.instance.passportApi.showPassport(
     context = // Context,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
     credifyId = // Your user's credify id,

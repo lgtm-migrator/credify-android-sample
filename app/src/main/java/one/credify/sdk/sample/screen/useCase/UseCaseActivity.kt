@@ -50,7 +50,8 @@ class UseCaseActivity : BaseActivity() {
             mUser?.run {
                 MyPageActivity.startActivity(
                     context = it.context,
-                    user = this
+                    user = this,
+                    marketInfo = mMarketInfo
                 )
             }
         }

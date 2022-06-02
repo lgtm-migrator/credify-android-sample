@@ -20,4 +20,7 @@ class User {
 
     @SerializedName("phoneCountryCode")
     lateinit var phoneCountryCode: String
+
+    @SerializedName("credifyId")
+    var credifyId: String? = null
 }

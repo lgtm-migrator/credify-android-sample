@@ -44,7 +44,8 @@ class UserRequester {
                     ),
                     email = user.email,
                     dob = null,
-                    address = null
+                    address = null,
+                    credifyId = user.credifyId
                 )
 
                 onResult(true, userProfile)
