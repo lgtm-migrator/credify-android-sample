@@ -228,31 +228,6 @@ CredifySDK.instance.offerApi.showOffer(
 )
 ```
 
-#### Use Referral
-
-Using the below code for showing the **referral information** with `completed` status:
-
-```kotlin
-CredifySDK.instance.referralApi.showReferralResult(
-    context = // Context,
-    userProfile = // one.credify.sdk.core.model.UserProfile object,
-    marketName = // Your app name,
-    callback = object : CredifySDK.OnShowReferralResultCallback {
-        override fun onShow() {
-            // The page is showing on the UI
-        }
-
-        override fun onError(ex: Exception) {
-            // There is an error
-        }
-
-        override fun onClose() {
-            // The page is closed
-        }
-    }
-)
-```
-
 #### Show Passport
 
 Using the below code for showing the **Passport web app**. This page will show all the offers which the user has redeemed.
@@ -317,10 +292,10 @@ CredifySDK.instance.passportApi.showPassport(
 )
 ```
 
-#### Setup language
+#### Setting language
 
 - It's available from version `v0.1.16`.
-- Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that should be used for the localization in the SDK. The `language` is an ISO 639 alpha-2 or alpha-3 language code, or a language subtag up to 8 characters in length.
+- Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that will be used for the localization in the SDK.
 
 ### Customize theme
 
