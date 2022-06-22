@@ -18,7 +18,7 @@ class UserRequester {
     ) {
         onRequest()
 
-        Log.d("UserRequester", "Url: $url")
+        //Log.d("UserRequester", "Url: $url")
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
@@ -71,7 +71,7 @@ class UserRequester {
     ) {
         onRequest()
 
-        Log.d("UserRequester", "Url: $url")
+        //Log.d("UserRequester", "Url: $url")
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
