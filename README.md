@@ -395,9 +395,9 @@ CredifySDK.instance.passportApi.showPassport(
 )
 ```
 
-### Show the Service Instance
+### Show the Service detail
 
-Using the below code for showing the **Service Instance page**. It will show all the BNPL details which the user has used.
+Using the below code for showing the **Service detail page**. It will show all the BNPL details which the user has used.
 
 ```kotlin
 CredifySDK.instance.passportApi.showServiceInstance(
