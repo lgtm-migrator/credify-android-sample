@@ -23,7 +23,7 @@ class MarketRequester {
 
         val url = marketInfo.getPushClaimTokenUrl
 
-        Log.d("UserRequester", "Url: $url")
+        //Log.d("UserRequester", "Url: $url")
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(context)
@@ -41,7 +41,7 @@ class MarketRequester {
             },
             {
                 // Error
-                Log.d("MarketRequester", "pushClaimToken -> Error: $it")
+                //Log.d("MarketRequester", "pushClaimToken -> Error: $it")
                 onResult(false)
             }
         ) {}
