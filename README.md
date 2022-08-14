@@ -120,7 +120,8 @@ val params = GetOfferListParam(
     phoneNumber = // Your user phone number (Optional) - e.g. "32123456789",
     countryCode = // Your user phone number country code (Optional) - e.g. "+84",
     localId = // Your user id,
-    credifyId = // Your user's credify id (Optional)
+    credifyId = // Your user's credify id (Optional),
+    productTypes = // List of ProductType enum that will be used to filter out the offers
 )
 
 CredifySDK.instance.offerApi.getOfferList(params = params, callback: OfferListCallback)
