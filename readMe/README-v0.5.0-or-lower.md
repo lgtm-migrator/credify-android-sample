@@ -2,16 +2,13 @@
 
 The SDK supports API level 23 and above ([distribution stats](https://developer.android.com/about/dashboards)).
 
-This guideline is for the SDK `v0.6.0+`.
-
-If you are using version `v0.5.0` or lower you should follow [this guideline](./readMe/README-v0.5.0-or-lower.md)
-
 Update the `build.gradle`(project level).
 
 ```java
 allprojects {
     repositories {
         ...
+        maven { url 'https://jitpack.io' } // Add this line if you are using SDK version `v0.1.x`.
         mavenCentral()
     }
 }
@@ -21,7 +18,22 @@ Update the `build.gradle`(app level).
 
 ```java
 dependencies {
-    implementation 'one.credify.sdk:android-sdk:[last-version]'
+    implementation 'one.credify.sdk:android-sdk:v0.5.0'
+}
+```
+
+**Note**: Update the `build.gradle`(app level) for SDK version `v0.1.x`.
+
+```java
+android {
+    ...
+
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+        noCompress "bic"
+    }
+    ...
 }
 ```
 
@@ -34,19 +46,6 @@ Sync project with Gradle file.
 Then you need to add this line *tools:replace="android:supportsRtl"* into the *<application>* element in the *AndroidManifest.xml*.
 
 <img width="622" alt="Screenshot 2021-07-01 at 20 24 52" src="https://user-images.githubusercontent.com/18586774/124133651-3d250b00-daac-11eb-80fd-981cf85568c8.png">
-
-If the `compileSdkVersion` is less than `31` then you need to add the below scripts:
-
-```java
-android {
-  ...
-  configurations.all {
-      resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
-      resolutionStrategy { force 'androidx.appcompat:appcompat:1.3.1' }
-  }
-  ...
-}
-```
 
 ## Getting stated
 
@@ -65,7 +64,7 @@ override fun onCreate() {
         .withApiKey([Your API Key])
         .withContext(this)
         .withEnvironment([Environment])
-        .withTheme([ServiceXThemeConfig])
+        .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
         .build()
     ...
 }
@@ -84,7 +83,7 @@ class DemoApplication : Application() {
             .withApiKey([Your API Key])
             .withContext(this)
             .withEnvironment([Environment])
-            .withTheme([ServiceXThemeConfig])
+            .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
             .build()
     }
     ...
@@ -112,9 +111,28 @@ val credifySDK = CredifySDK.instance
 
 #### Get offers list
 
-Your backend need to provide an API for getting offer list. The response should obtain the `credify_id` if the user have created account on Credify.
+First, you need to create a parameter object by using `GetOfferListParam` class.
 
-> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOfferByCode`
+Secondly, to get offers list from the Credify SDK, you should use `getOfferList` method:
+
+```kotlin
+val params = GetOfferListParam(
+    phoneNumber = // Your user phone number (Optional) - e.g. "32123456789",
+    countryCode = // Your user phone number country code (Optional) - e.g. "+84",
+    localId = // Your user id,
+    credifyId = // Your user's credify id (Optional),
+    productTypes = // List of ProductType enum that will be used to filter out the offers
+)
+
+CredifySDK.instance.offerApi.getOfferList(params = params, callback: OfferListCallback)
+// OR
+CredifySDK.instance.offerApi.getOfferList(params = params): Observable<OfferList>
+
+// NOTE: you need to pass credifyId when you call `CredifySDK.instance.offerApi.showOffer` method
+data class OfferList(val offerList: List<Offer>, val credifyId: String?) : Serializable
+```
+    
+> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOffer`
 
 #### Show an offer detail
 
@@ -143,10 +161,12 @@ val user = UserProfile(
 To show an **offer detail** by using:
 
 ```kotlin
-CredifySDK.instance.offerApi.showOfferByCode(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
-    offerCode = // the selected offer code,
+    offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id. If your user have created Credify account then it should not be null. It's removed from v0.2.0 because it is moved to UserProfile object,
+    marketName = // Your app name,
     pushClaimCallback = // CredifySDK.PushClaimCallback callback,
     offerPageCallback = // CredifySDK.OfferPageCallback callback
 )
@@ -155,51 +175,12 @@ CredifySDK.instance.offerApi.showOfferByCode(
 You have to handle the `CredifySDK.PushClaimCallback` callback for pushing claims. For example:
 
 ```kotlin
-CredifySDK.instance.offerApi.showOfferByCode(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
-    offerCode = // the selected offer code,
+    offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
-    // Callback for pushing claims
-    pushClaimCallback = object : CredifySDK.PushClaimCallback {
-        override fun onPushClaim(
-            credifyId: String,
-            user: UserProfile, // It's removed from version v.0.2.x
-            resultCallback: CredifySDK.PushClaimResultCallback
-        ) {
-            // Code for pushing claims, you need to call your API to do this task.
-            // After pushing claims, you have to notify to Credify SDK. For example:
-            resultCallback.onPushClaimResult(
-                isSuccess = [true if success. Otherwise, pass false]
-            )
-        }
-    },
-    // Callback for closing the page
-    offerPageCallback = object : CredifySDK.OfferPageCallback {
-        override fun onClose(status: RedemptionResult) {
-            // There are three status
-            // - COMPLETED: the user redeemed offer successfully and the offer transaction status is COMPLETED.
-            // - PENDING:   the user redeemed offer successfully and the offer transaction status is PENDING.
-            // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked
-            //              on the back button in any screens in the offer redemption flow.
-        }
-
-        override fun onOpenUrl(url: String) {
-        }
-    }
-)
-```
-
-> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOfferByCode`
-
-#### Show promotion offer list
-
-Using below method to show promotions offer list. The parameters are the same with the `CredifySDK.instance.offerApi.showOfferByCode` except you have to pass `offerCodes` list instead of an `offerCode`.
-
-```kotlin
-CredifySDK.instance.offerApi.showPromotionOffersByCodes(
-    context = // Context,
-    offerCodes = // The list of offer codes,
-    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id. It's removed from v0.2.0 because of moving to UserProfile object,
+    marketName = // Your app name,
     pushClaimCallback = object : CredifySDK.PushClaimCallback {
         override fun onPushClaim(
             credifyId: String,
@@ -218,7 +199,7 @@ CredifySDK.instance.offerApi.showPromotionOffersByCodes(
             // There are three status
             // - COMPLETED: the user redeemed offer successfully and the offer transaction status is COMPLETED.
             // - PENDING:   the user redeemed offer successfully and the offer transaction status is PENDING.
-            // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked
+            // - CANCELED:  the user redeemed offer successfully and he canceled this offer afterwords OR he clicked 
             //              on the back button in any screens in the offer redemption flow.
         }
 
@@ -227,59 +208,72 @@ CredifySDK.instance.offerApi.showPromotionOffersByCodes(
     }
 )
 ```
+    
+> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.offerApi.showOffer`
 
-#### Setting language
-
-- Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that will be used for the localization in the SDK.
-
-### BNPL usage
-
-#### Get offers list
-
-Your backend need to provide an API for getting offer list. The response should obtain the `credify_id` if the user have created account on Credify.
-
-> **Important**: you need to keep `credifyId` on your side. You have to send the `credifyId` to Credify SDK when you use the methods that require `credifyId`. E.g: `CredifySDK.instance.bnplApi.showBNPLByCodes`
-
-#### Show BNPL
-
-you use `CredifySDK.instance.bnplApi.showBNPLByCodes` to start the BNPL flow.
+To handle when the **offer detail** page is closed, you have to handle the `CredifySDK.OfferPageCallback` callback. For example:
 
 ```kotlin
-CredifySDK.instance.bnplApi.showBNPLByCodes(
+CredifySDK.instance.offerApi.showOffer(
     context = // Context,
-    offerCodes = // The list of offer codes,
-    packageCode = // Optional, you can pass nil for now,
+    offer = // one.credify.sdk.core.model.Offer object,
     userProfile = // one.credify.sdk.core.model.UserProfile object,
-    orderInfo = // The order info object, you need to create it on your side,
-    pushClaimCallback = object : CredifySDK.PushClaimCallback {
-        override fun onPushClaim(
-            credifyId: String,
-            resultCallback: CredifySDK.PushClaimResultCallback
-        ) {
-            // Code for pushing claims, you need to call your API to do this task.
-            // After pushing claims, you have to notify to Credify SDK. For example:
-            resultCallback.onPushClaimResult(
-                isSuccess = [true if success. Otherwise, pass false]
-            )
-        }
-    },
-    bnplPageCallback = object : CredifySDK.BNPLPageCallback {
-        override fun onClose(
-            status: RedemptionResult,
-            orderId: String,
-            isPaymentCompleted: Boolean
-        ) {
-            // Receive the result and update on your side if needed
+    credifyId = // Your user's credify id. It's removed from v0.2.0 because of moving to UserProfile object,
+    marketName = // Your app name,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback,
+    offerPageCallback = object : CredifySDK.OfferPageCallback {
+        override fun onClose() {
+            // Your code logic here
         }
     }
 )
 ```
 
-### Show Passport
+#### Show Passport
 
 Using the below code for showing the **Passport web app**. This page will show all the offers which the user has redeemed.
 
 > **Important**: This method must be used after the user created an account. That's mean you have `credifyId` on your side
+
+Older version than `v0.1.16`
+
+```kotlin
+CredifySDK.instance.offerApi.showPassport(
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    callback = object : CredifySDK.PassportPageCallback {
+        override fun onShow() {
+            // The page is showing on the UI
+        }
+
+        override fun onClose() {
+            // The page is closed
+        }
+    }
+)
+```
+
+Version `v0.1.16`
+
+```kotlin
+CredifySDK.instance.offerApi.showPassport(
+    context = // Context,
+    userProfile = // one.credify.sdk.core.model.UserProfile object,
+    credifyId = // Your user's credify id,
+    pushClaimCallback = // CredifySDK.PushClaimCallback callback. It's the same argument in the above CredifySDK.instance.offerApi.showOffer
+    callback = object : CredifySDK.PassportPageCallback {
+        override fun onShow() {
+            // The page is showing on the UI
+        }
+
+        override fun onClose() {
+            // The page is closed
+        }
+    }
+)
+```
+
+Version `v0.2.0` and above
 
 ```kotlin
 CredifySDK.instance.passportApi.showPassport(
@@ -299,27 +293,10 @@ CredifySDK.instance.passportApi.showPassport(
 )
 ```
 
-### Show the Service detail
+#### Setting language
 
-Using the below code for showing the **Service detail page**. It will show all the BNPL details which the user has used.
-
-```kotlin
-CredifySDK.instance.passportApi.showServiceInstance(
-    context = // Context,
-    userProfile = // one.credify.sdk.core.model.UserProfile object,
-    marketId = // Your orgnization id that you have registered with Credify,
-    productTypeList = // Product type list,
-    callback = object : CredifySDK.PageCallback {
-        override fun onClose() {
-            // The page is showing on the UI
-        }
-
-        override fun onShow() {
-            // The page is closed
-        }
-    }
-)
-```
+- It's available from version `v0.1.16`.
+- Using `CredifySDK.instance.setLanguage(language: String)` to setup the language that will be used for the localization in the SDK.
 
 ### Customize theme
 
@@ -335,7 +312,7 @@ You have to create `ServiceXThemeConfig` object when initializing the SDK. But i
         .withApiKey([Your API Key])
         .withContext(this)
         .withEnvironment([Environment])
-        .withTheme([ServiceXThemeConfig])
+        .withTheme([ServiceXThemeConfig]) // it's available on SDK version v0.1.11
         .build()
 ```
 
@@ -453,6 +430,87 @@ class ThemeIcon(
 
 ![Theme](./imgs/ThemeIcon1.png)
 ![Theme](./imgs/ThemeIcon2.png)
+
+### Migrate from version `v0.1.x` to `v0.2.x`
+
+#### ServiceXThemeConfig class
+
+Removed the below properties:
+
+- `context`.
+- `actionBarTopLeftRadius`.
+- `actionBarBottomLeftRadius`.
+- `actionBarTopRightRadius`.
+- `actionBarBottomRightRadius`.
+- `datePickerStyle`.
+- `elevation`.
+
+```kotlin
+/**
+ * @param color: it is [ThemeColor]
+ * @param font: it is [ThemeFont]
+ * @param icon: it is [ThemeIcon]
+ * @param inputFieldRadius: Input field radius
+ * @param pageHeaderRadius: bottom-left and bottom right action bar radius
+ * @param modelRadius: Model radius
+ * @param buttonRadius: Button radius
+ * @param boxShadow: Shadow for a component. Ex: "0px 4px 30px rgba(0, 0, 0, 0.1)".
+ * For more information, visit here: https://www.w3schools.com/cssref/css3_pr_box-shadow.asp
+ */
+class ServiceXThemeConfig(
+    val color: ThemeColor,
+    val font: ThemeFont,
+    val icon: ThemeIcon,
+    val inputFieldRadius: Float,
+    val pageHeaderRadius: Float,
+    val modelRadius: Float,
+    val buttonRadius: Float,
+    val boxShadow: String,
+)
+```
+
+#### ThemeColor class
+
+- Removed the `context` property.
+- All properties are in string instead of integer. It is hex string. For example: "#ff00ff"
+
+#### ThemeFont class
+
+- Removed the `context` property.
+- The `primaryFontFamily` property is the font family name instead of `Typeface`. It must be available on Google Font
+  E.g: "Oswald", "Roboto Slab"
+- The `secondaryFontFamily` property is the font family name instead of `Typeface`. It must be available on Google Font
+  E.g: "Oswald", "Roboto Slab"
+
+#### CredifyError class
+
+- Using `one.credify.sdk.core.model.CredifyError` instead of `one.credify.sdk.core.CredifyError`
+
+#### UserName class
+
+- The `name` property is nullable.
+
+#### PushClaimCallback interface
+
+- Removed `user` argument in the `onPushClaim` method.
+
+#### CredifySDK.instance.offerApi.showOffer method
+
+- Removed `marketName` argument.
+
+#### Update the `build.gradle`(app level).
+
+- If the `compileSdkVersion` is less than `31` then you need to add the below scripts:
+  ```java
+    android {
+      ...
+      configurations.all {
+          resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+          resolutionStrategy { force 'androidx.appcompat:appcompat:1.3.1' }
+      }
+      ...
+    }
+  ```
 
 ## Contacts
 
